@@ -25,12 +25,15 @@ import java.util.Date;
 import java.util.Locale;
 
 import jakevin.com.jkcalendar_lib.ui.adapter.CalendarAdapter;
+import jakevin.com.jkcalendar_lib.ui.adapter.CalendarConfig;
 import jakevin.com.jkcalendar_lib.ui.adapter.GridCellAdapter;
 
 /**
  * Created by jakevin on 14/11/29.
  */
 public class JKCalendar extends RelativeLayout {
+
+    private CalendarConfig config;
 
     private Context mContext;
 
@@ -89,7 +92,7 @@ public class JKCalendar extends RelativeLayout {
         mContext = context;
     }
 
-    public void init(String startYear, String startMonth, String endYear, String endMonth) {
+    public void step1(String startYear, String startMonth, String endYear, String endMonth) {
 
         SimpleDateFormat df2 = new SimpleDateFormat("yyyy-MM");
 
@@ -152,6 +155,41 @@ public class JKCalendar extends RelativeLayout {
         setHeaderView();
     }
 
+    public void step2(CalendarConfig config){
+        this.config = config;
+
+        findViewById(getResourseIdByName(mContext.getPackageName(),"id","galley_calendar")).setBackgroundColor(config.getLAYOUT_COLOR());
+
+        calendarLayout.setBackgroundColor(config.getLAYOUT_COLOR());
+
+        pre_month_icon_in_layout.setText(config.getPRE_MONTH_ARROW());
+        next_month_icon_in_layout.setText(config.getNEXT_MONTH_ARROW());
+        calendar_open.setText(config.getOPEN_BIG_CALENDAR());
+        calendar_close.setText(config.getCLOSE_BIG_CALENDAR());
+
+
+
+        if(config.getTypeface()!=null){
+            calendar_open.setTypeface(config.getTypeface());
+            calendar_close.setTypeface(config.getTypeface());
+            next_month_icon_in_layout.setTypeface(config.getTypeface());
+            pre_month_icon_in_layout.setTypeface(config.getTypeface());
+        }
+    }
+
+    public View getDateView(){
+       return findViewById(getResourseIdByName(mContext.getPackageName(),"id","date_view"));
+    }
+
+    public void setBelowView(View belowView){
+        LinearLayout belowLayout = (LinearLayout) findViewById(getResourseIdByName(mContext.getPackageName(),"id","below_view"));
+        belowLayout.addView(belowView);
+    }
+
+    public void setScrollBelowView(View belowView){
+        LinearLayout belowLayout = (LinearLayout) findViewById(getResourseIdByName(mContext.getPackageName(),"id","scroll_below_view"));
+        belowLayout.addView(belowView);
+    }
 
     int currentIndex = 0;
 
@@ -253,7 +291,6 @@ public class JKCalendar extends RelativeLayout {
 
 
         //展開日歷
-        calendar_open.setText("V");
         calendar_open.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -319,7 +356,6 @@ public class JKCalendar extends RelativeLayout {
         calendar_month_in_layout.setText(String.format("%tb", selectCalendar.getTime()));
 
         //關閉月曆
-        calendar_close.setText("X");
         calendar_close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -333,7 +369,7 @@ public class JKCalendar extends RelativeLayout {
         if ((pre_diffYear * 12 + selectCalendar.get(Calendar.MONTH)) > calendars.get(0).get(Calendar.MONTH)) {
             pre_month_icon_in_layout.setVisibility(View.VISIBLE);
             pre_month_in_layout.setVisibility(View.VISIBLE);
-            pre_month_icon_in_layout.setText("<");
+
 
             pre_month_in_layout.setTag(selectCalendar);
             pre_month_in_layout.setOnClickListener(new View.OnClickListener() {
@@ -355,7 +391,6 @@ public class JKCalendar extends RelativeLayout {
         if (diffMonth > 0) {
             next_month_icon_in_layout.setVisibility(View.VISIBLE);
             next_month_in_layout.setVisibility(View.VISIBLE);
-            next_month_icon_in_layout.setText(">");
 
             next_month_in_layout.setTag(selectCalendar);
             next_month_in_layout.setOnClickListener(new View.OnClickListener() {
@@ -414,6 +449,8 @@ public class JKCalendar extends RelativeLayout {
         calendarView = (GridView) findViewById(getResourseIdByName(mContext.getPackageName(),"id","calendar"));
 
         calendarLayout = (LinearLayout) findViewById(getResourseIdByName(mContext.getPackageName(),"id","calendar_layout"));
+
+
     }
 
     public GridCellAdapter.IEventDateClick listen = new GridCellAdapter.IEventDateClick() {

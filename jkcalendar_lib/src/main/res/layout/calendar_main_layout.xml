@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/holo_blue_dark">
+
+            <TextView
+                android:id="@+id/calendar_month"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:elevation="8dp"
+                android:gravity="center"
+                android:padding="5dp"
+                android:textColor="@android:color/white"
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/calendar_pre_month"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:elevation="8dp"
+                android:textColor="@android:color/white" />
+
+
+            <TextView
+                android:id="@+id/calendar_next_month"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:elevation="8dp"
+                android:textColor="@android:color/white" />
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/holo_blue_dark">
+
+            <View
+                android:layout_width="50dp"
+                android:layout_height="60dp"
+                android:layout_centerInParent="true"
+                android:background="@android:color/white" />
+
+            <Gallery
+                android:id="@+id/date_viewpager"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:spacing="30dp" />
+
+        </RelativeLayout>
+
+
+        <TextView
+            android:id="@+id/calendar_open"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@android:color/holo_blue_dark"
+            android:gravity="center"
+            android:paddingBottom="2dp"
+            android:paddingTop="2dp"
+            android:text="+"
+            android:textColor="@android:color/white"
+            android:textSize="22dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/calendar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/holo_blue_dark"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:id="@+id/calendar_month_in_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:elevation="8dp"
+                android:gravity="center"
+                android:padding="5dp"
+                android:textColor="@android:color/white"
+                android:textSize="14dp" />
+
+            <View
+                android:id="@+id/pre_month_in_layout"
+                android:layout_width="50dp"
+                android:layout_height="30dp"
+                android:layout_alignParentLeft="true" />
+
+            <TextView
+                android:id="@+id/pre_month_icon_in_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:elevation="8dp"
+                android:gravity="center"
+                android:padding="5dp"
+                android:textColor="@android:color/white"
+                android:textSize="22dp" />
+
+            <View
+                android:id="@+id/next_month_in_layout"
+                android:layout_width="50dp"
+                android:layout_height="30dp"
+                android:layout_alignParentRight="true" />
+
+            <TextView
+                android:id="@+id/next_month_icon_in_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:elevation="8dp"
+                android:gravity="center"
+                android:padding="5dp"
+                android:textColor="@android:color/white"
+                android:textSize="22dp" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Sun"
+                android:textColor="@android:color/white"
+                android:textSize="12dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Mon"
+                android:textColor="@android:color/white"
+                android:textSize="12dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Tue"
+                android:textColor="@android:color/white"
+                android:textSize="12dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Wen"
+                android:textColor="@android:color/white"
+                android:textSize="12dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Thu"
+                android:textColor="@android:color/white"
+                android:textSize="12dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Fri"
+                android:textColor="@android:color/white"
+                android:textSize="12dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Sat"
+                android:textColor="@android:color/white"
+                android:textSize="12dp" />
+
+
+        </LinearLayout>
+
+        <GridView
+            android:id="@+id/calendar"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:listSelector="@android:color/transparent"
+            android:numColumns="7" />
+
+        <TextView
+            android:id="@+id/calendar_close"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@android:color/holo_blue_dark"
+            android:gravity="center"
+            android:paddingBottom="2dp"
+            android:paddingTop="2dp"
+            android:text="+"
+            android:textColor="@android:color/white"
+            android:textSize="22dp" />
+
+    </LinearLayout>
+</RelativeLayout>

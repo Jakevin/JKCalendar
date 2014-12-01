@@ -1,0 +1,40 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 21
+    buildToolsVersion "21.0.1"
+
+    defaultConfig {
+        applicationId "jakevin.com.jkcalendar_lib"
+        minSdkVersion 15
+        targetSdkVersion 21
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            runProguard false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: "http://YOUR_MAVEN_REPOSTORY_SERVER/URL"){
+                authentication(userName: "YOUR_USER_NAME", password: "YOUR_PASSWORD")
+            }
+            pom.project {
+                groupId 'com.yourcompany.lib'
+                artifactId 'firstAARLib'
+                version '1.0.0'
+                packaging 'aar'
+            }
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+}

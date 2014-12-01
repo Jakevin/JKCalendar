@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 21
-    buildToolsVersion "21.0.1"
+    compileSdkVersion 15
+    buildToolsVersion "19.1.0"
 
     defaultConfig {
         applicationId "jakevin.com.jkcalendar"
         minSdkVersion 15
-        targetSdkVersion 21
+        targetSdkVersion 15
         versionCode 1
         versionName "1.0"
     }
@@ -19,6 +19,62 @@ android {
     }
 }
 
+apply plugin: 'android'
+
+version = 1.0
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:0.13.+'
+    }
+}
+
+repositories {
+    mavenCentral()
+}
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile project(':jkcalendar_lib')
+    //此处填写需要打包的Android Library Project name
+}
+
+task sync_jars() << {
+    //把所有依赖的.jar库都拷贝到build/aar/libs下
+    copy {
+        into buildDir.getPath() +"/aar/libs"
+        from configurations.compile.findAll {
+            it.getName().endsWith(".jar")
+        }
+    }
+}
+task sync_aars(dependsOn:':jkcalendar_lib:assembleRelease') << {
+    //把所有依赖的.aar库里包含的classes.jar都拷贝到build/aar/libs下，并重命名以不被覆盖
+    def jar_name
+    def aar_path
+    def dest_dir = buildDir.getPath()+"/aar"
+    configurations.compile.findAll {
+        it.getName().endsWith(".aar")
+    }.collect {
+        aar_path = it.getPath()
+        jar_name = "libs/"+it.getName().replace(".aar",".jar")
+        copy {
+            from zipTree(aar_path)
+            into dest_dir
+            include "**/*"
+            rename 'classes.jar', jar_name
+        }
+    }
+}
+task fataar(dependsOn:[sync_aars, sync_jars]) << {
+
+    task (gen_aar, type: Zip) {
+        //把生成最终的aar包，注意libs目录需要被排除
+        def dest_dir = buildDir.getPath()+"/aar/"
+        baseName = "mysdk-all"
+        extension = "aar"
+        destinationDir = file(buildDir.getPath())
+        from dest_dir
+        exclude "libs"
+    }.execute()
 }

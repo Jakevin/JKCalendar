@@ -3,8 +3,9 @@ JKCalendar
 
 ## Accupass Share Custom Calendar View
 https://play.google.com/store/apps/details?id=com.accuvally.android.accupass
-
 Accupass Android v3.0.8 release Function Calendar Event user view
+
+<img src="art/device-2014-12-01-152049.gif" />
 
 ## How to use?
 ```java

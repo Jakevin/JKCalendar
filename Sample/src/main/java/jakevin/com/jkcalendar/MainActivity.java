@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import java.util.Calendar;
 
@@ -21,7 +22,7 @@ public class MainActivity extends Activity {
         ((JKCalendar) findViewById(R.id.main_calendar)).setOnCalendarListener(new JKCalendar.OnCalendarListener() {
             @Override
             public void onCalendarSelected(Calendar calendar) {
-
+                Toast.makeText(MainActivity.this,calendar.getTime().toString(),Toast.LENGTH_LONG).show();
             }
         });
     }

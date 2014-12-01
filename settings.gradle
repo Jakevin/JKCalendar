@@ -1,1 +1,1 @@
-include ':app', ':jkcalendar_lib'
+include ':Sample', ':jkcalendar_lib'

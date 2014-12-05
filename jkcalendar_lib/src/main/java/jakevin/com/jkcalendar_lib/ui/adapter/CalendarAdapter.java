@@ -1,6 +1,7 @@
 package jakevin.com.jkcalendar_lib.ui.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
+import jakevin.com.jkcalendar_lib.R;
 import jakevin.com.jkcalendar_lib.ui.JKCalendar;
 
 /**
@@ -29,6 +31,9 @@ public class CalendarAdapter extends BaseAdapter {
 
     ArrayList<Calendar> calendars;
 
+    int color_high = Color.BLUE;
+    int color_hide = Color.GRAY;
+
     public CalendarAdapter(Context context, ArrayList<Calendar> calendars){
         this.layoutInflater = LayoutInflater.from(context);
         this.mContext = context;
@@ -39,6 +44,13 @@ public class CalendarAdapter extends BaseAdapter {
             clicks.add(false);
         }
 
+        color_hide = mContext.getResources().getColor(android.R.color.darker_gray);
+        color_high = mContext.getResources().getColor(android.R.color.holo_blue_light);
+    }
+
+    public void setColor(int high , int hide){
+        color_high = high;
+        color_hide = hide;
     }
 
     private class ViewHodler{
@@ -76,13 +88,22 @@ public class CalendarAdapter extends BaseAdapter {
         ViewHodler viewHodler;
 
         if (convertView == null) {
-            convertView = layoutInflater.inflate(JKCalendar.getResourseIdByName(mContext.getPackageName(),"layout","calender_adpter_layout"), null);
+//            convertView = layoutInflater.inflate(JKCalendar.getResourseIdByName(mContext.getPackageName(),"layout","calender_adpter_layout"), null);
+//
+//            viewHodler = new ViewHodler();
+//
+//            viewHodler.dayOfMonth = (TextView) convertView.findViewById(JKCalendar.getResourseIdByName(mContext.getPackageName(),"id","day_of_month"));
+//
+//            viewHodler.dayOfWeek = (TextView) convertView.findViewById(JKCalendar.getResourseIdByName(mContext.getPackageName(),"id","day_of_week"));
+
+            convertView = layoutInflater.inflate(R.layout.calender_adpter_layout, null);
 
             viewHodler = new ViewHodler();
 
-            viewHodler.dayOfMonth = (TextView) convertView.findViewById(JKCalendar.getResourseIdByName(mContext.getPackageName(),"id","day_of_month"));
+            viewHodler.dayOfMonth = (TextView) convertView.findViewById(R.id.day_of_month);
 
-            viewHodler.dayOfWeek = (TextView) convertView.findViewById(JKCalendar.getResourseIdByName(mContext.getPackageName(),"id","day_of_week"));
+            viewHodler.dayOfWeek = (TextView) convertView.findViewById(R.id.day_of_week);
+
 
             convertView.setTag(viewHodler);
         }
@@ -102,11 +123,11 @@ public class CalendarAdapter extends BaseAdapter {
         viewHodler.dayOfWeek.setText(parserSDF.format(tempCalendar.getTime()));
 
         if(clicks.get(position)){
-            viewHodler.dayOfWeek.setTextColor(mContext.getResources().getColor(android.R.color.holo_blue_light));
-            viewHodler.dayOfMonth.setTextColor(mContext.getResources().getColor(android.R.color.holo_blue_light));
+            viewHodler.dayOfWeek.setTextColor(color_high);
+            viewHodler.dayOfMonth.setTextColor(color_high);
         }else{
-            viewHodler.dayOfWeek.setTextColor(mContext.getResources().getColor(android.R.color.darker_gray));
-            viewHodler.dayOfMonth.setTextColor(mContext.getResources().getColor(android.R.color.darker_gray));
+            viewHodler.dayOfWeek.setTextColor(color_hide);
+            viewHodler.dayOfMonth.setTextColor(color_hide);
         }
 
         return convertView;

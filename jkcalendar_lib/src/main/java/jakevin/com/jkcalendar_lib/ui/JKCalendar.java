@@ -3,6 +3,7 @@ package jakevin.com.jkcalendar_lib.ui;
 import android.content.Context;
 import android.os.Message;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -14,7 +15,6 @@ import android.widget.Gallery;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.text.ParseException;
@@ -24,6 +24,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import jakevin.com.jkcalendar_lib.R;
 import jakevin.com.jkcalendar_lib.ui.adapter.CalendarAdapter;
 import jakevin.com.jkcalendar_lib.ui.adapter.CalendarConfig;
 import jakevin.com.jkcalendar_lib.ui.adapter.GridCellAdapter;
@@ -31,7 +32,7 @@ import jakevin.com.jkcalendar_lib.ui.adapter.GridCellAdapter;
 /**
  * Created by jakevin on 14/11/29.
  */
-public class JKCalendar extends RelativeLayout {
+public class JKCalendar extends LinearLayout {
 
     private CalendarConfig config;
 
@@ -108,7 +109,12 @@ public class JKCalendar extends RelativeLayout {
 
         endCalendar.set(Calendar.DAY_OF_MONTH, endCalendar.getActualMaximum(Calendar.DAY_OF_MONTH));
 
-        addView(LayoutInflater.from(mContext).inflate(getResourseIdByName(mContext.getPackageName(),"layout","calendar_main_layout"), null));
+        Log.i("getPackageName",mContext.getPackageName());
+
+//        addView(LayoutInflater.from(getContext()).inflate(getResourseIdByName(getContext().getPackageName(), "layout", "calendar_main_layout"), null));
+
+        View viewToLoad = LayoutInflater.from(getContext()).inflate(R.layout.calendar_main_layout, null,false);
+        addView(viewToLoad);
 
         //Today Calendar
         _calendar = Calendar.getInstance(Locale.getDefault());
@@ -158,7 +164,8 @@ public class JKCalendar extends RelativeLayout {
     public void step2(CalendarConfig config){
         this.config = config;
 
-        findViewById(getResourseIdByName(mContext.getPackageName(),"id","galley_calendar")).setBackgroundColor(config.getLAYOUT_COLOR());
+//        findViewById(getResourseIdByName(mContext.getPackageName(),"id","galley_calendar")).setBackgroundColor(config.getLAYOUT_COLOR());
+        findViewById(R.id.galley_calendar).setBackgroundColor(config.getLAYOUT_COLOR());
 
         calendarLayout.setBackgroundColor(config.getLAYOUT_COLOR());
 
@@ -167,7 +174,11 @@ public class JKCalendar extends RelativeLayout {
         calendar_open.setText(config.getOPEN_BIG_CALENDAR());
         calendar_close.setText(config.getCLOSE_BIG_CALENDAR());
 
+        preMonth.setTextColor(config.getHIDE_COLOR());
+        nextMonth.setTextColor(config.getHIDE_COLOR());
 
+        calendarsAdapter.setColor(config.getLAYOUT_COLOR(),config.getHIDE_COLOR());
+//        adapter.setColor(config.getLAYOUT_COLOR(),config.getHIDE_COLOR());
 
         if(config.getTypeface()!=null){
             calendar_open.setTypeface(config.getTypeface());
@@ -178,16 +189,17 @@ public class JKCalendar extends RelativeLayout {
     }
 
     public View getDateView(){
-       return findViewById(getResourseIdByName(mContext.getPackageName(),"id","date_view"));
+        return findViewById(R.id.date_view);
+//       return findViewById(getResourseIdByName(mContext.getPackageName(),"id","date_view"));
     }
 
     public void setBelowView(View belowView){
-        LinearLayout belowLayout = (LinearLayout) findViewById(getResourseIdByName(mContext.getPackageName(),"id","below_view"));
+        LinearLayout belowLayout = (LinearLayout) findViewById(R.id.below_view);
         belowLayout.addView(belowView);
     }
 
     public void setScrollBelowView(View belowView){
-        LinearLayout belowLayout = (LinearLayout) findViewById(getResourseIdByName(mContext.getPackageName(),"id","scroll_below_view"));
+        LinearLayout belowLayout = (LinearLayout) findViewById(R.id.scroll_below_view);
         belowLayout.addView(belowView);
     }
 
@@ -298,7 +310,10 @@ public class JKCalendar extends RelativeLayout {
                 refreshCalendar(calendars.get(dateViewpager.getSelectedItemPosition()));
                 calendarLayout.setVisibility(View.VISIBLE);
 
-                Animation in_Anim = AnimationUtils.loadAnimation(mContext, getResourseIdByName(mContext.getPackageName(),"anim","slide_in_top"));
+//                Animation in_Anim = AnimationUtils.loadAnimation(mContext, getResourseIdByName(mContext.getPackageName(),"anim","slide_in_top"));
+
+                Animation in_Anim = AnimationUtils.loadAnimation(mContext, R.anim.slide_in_top);
+
 
                 in_Anim.setAnimationListener(new Animation.AnimationListener() {
                     @Override
@@ -335,7 +350,9 @@ public class JKCalendar extends RelativeLayout {
         }
 
         // Initialised
-        adapter = new GridCellAdapter(mContext, getResourseIdByName(mContext.getPackageName(),"id","calendar_day_gridcell"), tempCalendarDatas, calendars.get(today_index));
+//        adapter = new GridCellAdapter(mContext, getResourseIdByName(mContext.getPackageName(),"id","calendar_day_gridcell"), tempCalendarDatas, calendars.get(today_index));
+        adapter = new GridCellAdapter(mContext, R.id.calendar_day_gridcell, tempCalendarDatas, calendars.get(today_index));
+
         adapter.notifyDataSetChanged();
         calendarView.setAdapter(adapter);
 
@@ -417,7 +434,10 @@ public class JKCalendar extends RelativeLayout {
         }
 
         // Initialised
-        adapter = new GridCellAdapter(mContext, getResourseIdByName(mContext.getPackageName(),"id","calendar_day_gridcell"), tempCalendarDatas, selectCalendar);
+//        adapter = new GridCellAdapter(mContext, getResourseIdByName(mContext.getPackageName(),"id","calendar_day_gridcell"), tempCalendarDatas, selectCalendar);
+
+        adapter = new GridCellAdapter(mContext, R.id.calendar_day_gridcell, tempCalendarDatas, selectCalendar);
+
 
         adapter.notifyDataSetChanged();
 
@@ -430,27 +450,45 @@ public class JKCalendar extends RelativeLayout {
 
     private void initView() {
         //初始化VIEW
-        dateViewpager = (Gallery) findViewById(getResourseIdByName(mContext.getPackageName(),"id","date_viewpager"));
+//        dateViewpager = (Gallery) findViewById(getResourseIdByName(mContext.getPackageName(),"id","date_viewpager"));
+//
+//        calendar_month_in_layout = (TextView) findViewById(getResourseIdByName(mContext.getPackageName(),"id","calendar_month_in_layout"));
+//        pre_month_icon_in_layout = (TextView) findViewById(getResourseIdByName(mContext.getPackageName(),"id","pre_month_icon_in_layout"));
+//        pre_month_in_layout = findViewById(getResourseIdByName(mContext.getPackageName(),"id","pre_month_in_layout"));
+//        next_month_icon_in_layout = (TextView) findViewById(getResourseIdByName(mContext.getPackageName(),"id","next_month_icon_in_layout"));
+//        next_month_in_layout = findViewById(getResourseIdByName(mContext.getPackageName(),"id","next_month_in_layout"));
+//
+//        calendar_close = (TextView) findViewById(getResourseIdByName(mContext.getPackageName(),"id","calendar_close"));
+//
+//        calendar_open = (TextView) findViewById(getResourseIdByName(mContext.getPackageName(),"id","calendar_open"));
+//
+//        monthText = (TextView) findViewById(getResourseIdByName(mContext.getPackageName(),"id","calendar_month"));
+//        preMonth = (TextView) findViewById(getResourseIdByName(mContext.getPackageName(),"id","calendar_pre_month"));
+//        nextMonth = (TextView) findViewById(getResourseIdByName(mContext.getPackageName(),"id","calendar_next_month"));
+//
+//        calendarView = (GridView) findViewById(getResourseIdByName(mContext.getPackageName(),"id","calendar"));
+//
+//        calendarLayout = (LinearLayout) findViewById(getResourseIdByName(mContext.getPackageName(),"id","calendar_layout"));
 
-        calendar_month_in_layout = (TextView) findViewById(getResourseIdByName(mContext.getPackageName(),"id","calendar_month_in_layout"));
-        pre_month_icon_in_layout = (TextView) findViewById(getResourseIdByName(mContext.getPackageName(),"id","pre_month_icon_in_layout"));
-        pre_month_in_layout = findViewById(getResourseIdByName(mContext.getPackageName(),"id","pre_month_in_layout"));
-        next_month_icon_in_layout = (TextView) findViewById(getResourseIdByName(mContext.getPackageName(),"id","next_month_icon_in_layout"));
-        next_month_in_layout = findViewById(getResourseIdByName(mContext.getPackageName(),"id","next_month_in_layout"));
+        dateViewpager = (Gallery) findViewById(R.id.date_viewpager);
 
-        calendar_close = (TextView) findViewById(getResourseIdByName(mContext.getPackageName(),"id","calendar_close"));
+        calendar_month_in_layout = (TextView) findViewById(R.id.calendar_month_in_layout);
+        pre_month_icon_in_layout = (TextView) findViewById(R.id.pre_month_icon_in_layout);
+        pre_month_in_layout = findViewById(R.id.pre_month_in_layout);
+        next_month_icon_in_layout = (TextView) findViewById(R.id.next_month_icon_in_layout);
+        next_month_in_layout = findViewById(R.id.next_month_in_layout);
 
-        calendar_open = (TextView) findViewById(getResourseIdByName(mContext.getPackageName(),"id","calendar_open"));
+        calendar_close = (TextView) findViewById(R.id.calendar_close);
 
-        monthText = (TextView) findViewById(getResourseIdByName(mContext.getPackageName(),"id","calendar_month"));
-        preMonth = (TextView) findViewById(getResourseIdByName(mContext.getPackageName(),"id","calendar_pre_month"));
-        nextMonth = (TextView) findViewById(getResourseIdByName(mContext.getPackageName(),"id","calendar_next_month"));
+        calendar_open = (TextView) findViewById(R.id.calendar_open);
 
-        calendarView = (GridView) findViewById(getResourseIdByName(mContext.getPackageName(),"id","calendar"));
+        monthText = (TextView) findViewById(R.id.calendar_month);
+        preMonth = (TextView) findViewById(R.id.calendar_pre_month);
+        nextMonth = (TextView) findViewById(R.id.calendar_next_month);
 
-        calendarLayout = (LinearLayout) findViewById(getResourseIdByName(mContext.getPackageName(),"id","calendar_layout"));
+        calendarView = (GridView) findViewById(R.id.calendar);
 
-
+        calendarLayout = (LinearLayout) findViewById(R.id.calendar_layout);
     }
 
     public GridCellAdapter.IEventDateClick listen = new GridCellAdapter.IEventDateClick() {
@@ -472,7 +510,10 @@ public class JKCalendar extends RelativeLayout {
     };
 
     private void closeCal(final int index, final boolean hasSend) {
-        Animation out_Anim = AnimationUtils.loadAnimation(mContext, getResourseIdByName(mContext.getPackageName(),"anim","slide_out_top"));
+//        Animation out_Anim = AnimationUtils.loadAnimation(mContext, getResourseIdByName(mContext.getPackageName(),"anim","slide_out_top"));
+
+        Animation out_Anim = AnimationUtils.loadAnimation(mContext, R.anim.slide_out_top);
+
         out_Anim.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
@@ -555,40 +596,39 @@ public class JKCalendar extends RelativeLayout {
         return Math.abs(diffYear * 12 + diffMonth);
     }
 
-    public static int getResourseIdByName(String packageName, String className,
-                                          String name) {
-        Class r = null;
-        int id = 0;
-        try {
-            r = Class.forName(packageName + ".R");
-
-            Class[] classes = r.getClasses();
-            Class desireClass = null;
-
-            for (int i = 0; i < classes.length; i++) {
-                if (classes[i].getName().split("\\$")[1].equals(className)) {
-                    desireClass = classes[i];
-                    break;
-                }
-            }
-
-            if (desireClass != null)
-                id = desireClass.getField(name).getInt(desireClass);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        } catch (SecurityException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        }
-
-        return id;
-
-    }
+//    public static int getResourseIdByName(String packageName, String className, String name) {
+//        Class r = null;
+//        int id = 0;
+//        try {
+//            r = Class.forName(packageName + ".R");
+//
+//            Class[] classes = r.getClasses();
+//            Class desireClass = null;
+//
+//            for (int i = 0; i < classes.length; i++) {
+//                if (classes[i].getName().split("\\$")[1].equals(className)) {
+//                    desireClass = classes[i];
+//                    break;
+//                }
+//            }
+//
+//            if (desireClass != null)
+//                id = desireClass.getField(name).getInt(desireClass);
+//        } catch (ClassNotFoundException e) {
+//            e.printStackTrace();
+//        } catch (IllegalArgumentException e) {
+//            e.printStackTrace();
+//        } catch (SecurityException e) {
+//            e.printStackTrace();
+//        } catch (IllegalAccessException e) {
+//            e.printStackTrace();
+//        } catch (NoSuchFieldException e) {
+//            e.printStackTrace();
+//        }
+//
+//        return id;
+//
+//    }
 
     public void setOnCalendarListener(OnCalendarListener onCalendarListener) {
         this.onCalendarListener = onCalendarListener;

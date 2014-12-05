@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
+import jakevin.com.jkcalendar_lib.R;
 import jakevin.com.jkcalendar_lib.ui.JKCalendar;
 
 /**
@@ -42,7 +43,6 @@ public class GridCellAdapter extends ArrayAdapter<Calendar> implements View.OnCl
 
     private Calendar _calendar;
 
-    public static final int[] daysOfMonth = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 //    private final int month, year;
     private int daysInMonth, prevMonthDays;
     private int currentDayOfMonth;
@@ -50,6 +50,9 @@ public class GridCellAdapter extends ArrayAdapter<Calendar> implements View.OnCl
 
     private final HashMap eventsPerMonthMap;
     private final SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MMM-yyyy",Locale.US);
+
+    private int color_hide = Color.GRAY;
+    private int color_high = Color.BLACK;
 
     static class ViewHolder {
         public View ciricleView;
@@ -82,6 +85,14 @@ public class GridCellAdapter extends ArrayAdapter<Calendar> implements View.OnCl
 
         // Find Number of Events
         eventsPerMonthMap = findNumberOfEventsPerMonth(_calendar.get(Calendar.YEAR), _calendar.get(Calendar.MONTH));
+
+        color_hide = Color.GRAY;
+        color_high = mContext.getResources().getColor(android.R.color.holo_blue_light);
+    }
+
+    public void setColor(int high,int hide){
+        color_hide = hide;
+        color_high = high;
     }
 
     private String getMonthAsString(int i) {
@@ -228,11 +239,19 @@ public class GridCellAdapter extends ArrayAdapter<Calendar> implements View.OnCl
     public View getView(int position, View convertView, ViewGroup parent) {
         final ViewHolder holder;
         if (convertView == null) {
-            convertView = LayoutInflater.from(mContext).inflate(JKCalendar.getResourseIdByName(mContext.getPackageName(),"layout","calendar_day_gridcell"), parent, false);
+//            convertView = LayoutInflater.from(mContext).inflate(JKCalendar.getResourseIdByName(mContext.getPackageName(),"layout","calendar_day_gridcell"), parent, false);
+//            holder = new ViewHolder();
+//            holder.gridcell = (TextView) convertView.findViewById(JKCalendar.getResourseIdByName(mContext.getPackageName(),"id","calendar_day_gridcell"));
+//            holder.ciricleView = (ImageView) convertView. findViewById(JKCalendar.getResourseIdByName(mContext.getPackageName(),"id","calendar_day_circle"));
+//            holder.num_events_per_day = (TextView) convertView.findViewById(JKCalendar.getResourseIdByName(mContext.getPackageName(),"id","num_events_per_day"));
+
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.calendar_day_gridcell, parent, false);
+
             holder = new ViewHolder();
-            holder.gridcell = (TextView) convertView.findViewById(JKCalendar.getResourseIdByName(mContext.getPackageName(),"id","calendar_day_gridcell"));
-            holder.ciricleView = (ImageView) convertView. findViewById(JKCalendar.getResourseIdByName(mContext.getPackageName(),"id","calendar_day_circle"));
-            holder.num_events_per_day = (TextView) convertView.findViewById(JKCalendar.getResourseIdByName(mContext.getPackageName(),"id","num_events_per_day"));
+            holder.gridcell = (TextView) convertView.findViewById(R.id.calendar_day_gridcell);
+            holder.ciricleView = (ImageView) convertView. findViewById(R.id.calendar_day_circle);
+            holder.num_events_per_day = (TextView) convertView.findViewById(R.id.num_events_per_day);
+
 
             convertView.setTag(holder);
         }else {
@@ -257,7 +276,7 @@ public class GridCellAdapter extends ArrayAdapter<Calendar> implements View.OnCl
         //JKLog.d(tag, "Setting GridCell " + theday + "-" + themonth + "-" + theyear);
 
         if (day_color[0].equals("GREY")) {
-            holder.gridcell.setTextColor(Color.GRAY);
+            holder.gridcell.setTextColor(color_hide);
         }
         if (day_color[0].equals("BLACK")) {
             GradientDrawable drawable = new GradientDrawable();
@@ -266,7 +285,7 @@ public class GridCellAdapter extends ArrayAdapter<Calendar> implements View.OnCl
             drawable.setSize((int)(holder.ciricleView.getWidth()*0.8), (int)(holder.ciricleView.getWidth()*0.8));
 
             holder.ciricleView.setBackgroundDrawable(drawable);
-            holder.gridcell.setTextColor(mContext.getResources().getColor(android.R.color.holo_blue_light));
+            holder.gridcell.setTextColor(color_high);
         }else{
             holder.ciricleView.setBackgroundDrawable(null);
         }
@@ -279,28 +298,6 @@ public class GridCellAdapter extends ArrayAdapter<Calendar> implements View.OnCl
 //            if (position%7==0 || position%7==6) {
 //                holder.gridcell.setTextColor(mContext.getResources().getColor(R.color.accupass_blue));
 //            }
-//            if(calendars.get(position-thisMonthStartIndex).isClick()&& !day_color[0].equals("WHITE")){
-//                GradientDrawable drawable = new GradientDrawable();
-//                drawable.setColor(Color.TRANSPARENT);
-//                drawable.setStroke((int) (holder.ciricleView.getWidth() * 0.1), mContext.getResources().getColor(R.color.accupass_blue));
-//                drawable.setShape(GradientDrawable.RADIAL_GRADIENT);
-//                drawable.setSize((int) (holder.ciricleView.getWidth() * 0.8), (int) (holder.ciricleView.getWidth() * 0.8));
-//                holder.ciricleView.setBackgroundDrawable(drawable);
-//            }
-//            switch (calendars.get(position-thisMonthStartIndex).getDateStatus()){
-//                case CalendarData.NOTHING:
-//                    holder.num_events_per_day.setText("");
-//                    break;
-//
-//                case CalendarData.HAS_EVENT:
-//                    holder.num_events_per_day.setText("\uE823");
-//                    break;
-//
-//                case CalendarData.HAS_TICKET:
-//                    holder.num_events_per_day.setText("\uE81D");
-//                    break;
-//            }
-//            holder.ciricleView.setTag(calendars.get(position-thisMonthStartIndex));
             holder.ciricleView.setTag("00".substring(0,2-theday.length())+theday + "-" + themonth + "-" + theyear);
 
             holder.ciricleView.setOnClickListener(this);
